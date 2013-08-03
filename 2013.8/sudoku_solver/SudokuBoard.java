@@ -1,5 +1,5 @@
-/*	SudokuBoard class for SudokuSolver project
-	by Ian Zapolsky 6/29/13 */
+/*	SudokuBoard class for sudoku_solver project
+	by Ian Zapolsky (7/29/13) */
 
 import java.util.Scanner;
 

@@ -1,4 +1,4 @@
-/*	SudokuBox class for SudokuSolver project
+/*	SudokuBox class for sudoku_solver project
 	by Ian Zapolsky (7/29/13) */
 
 import java.util.ArrayList;
