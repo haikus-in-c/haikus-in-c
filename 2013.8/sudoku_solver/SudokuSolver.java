@@ -10,7 +10,9 @@ public class SudokuSolver {
 
 	public void solve(SudokuBoard board) {
 		while (!board.isComplete()) {
+			System.out.println("FILLING ALL");
 			board.fillPossibleAll();
+			System.out.println("CHECKING ALL");
 			board.checkToSetAll();
 			System.out.println(board);
 		}

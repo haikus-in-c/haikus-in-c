@@ -2,12 +2,15 @@
 	by Ian Zapolsky (7/29/13) */
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class SudokuBoard {
 	private SudokuBox[][] board;
+	private ArrayList<Integer> possibilities;
 
 	public SudokuBoard() {
 		board = new SudokuBox[9][9];
+		possibilities = new ArrayList<Integer>();
 		buildBoardFromInput();
 	}
 
@@ -54,87 +57,106 @@ public class SudokuBoard {
 		if (current.hasValue())
 			/* do nothing */;
 		else
-			current.addPossible(findPossibilities(current));
+			current.addPossibleValues(findPossibilities(current));
+		System.out.println(current);
 	}
 
 	private ArrayList<Integer> findPossibilities(SudokuBox current) {
-		ArrayList<Integer> possibilities = initPossibilities();
-		possibilities = checkRow(possibilities, current.getRow());
-		possibilities = checkColumn(possibilities, current.getColumn());
-		possibilities = checkBox(possibilities, current.getBox());
+		initPossibilities();
+		checkRow(current.getRow());
+		checkColumn(current.getColumn());
+		checkBox(current.getBox());
 		return possibilities;
 	}
 
-	private ArrayList<Integer> initPossibilities() {
-		ArrayList<Integer> possibilities = new ArrayList<Integer>();
+	private void initPossibilities() {
+		possibilities.clear();
 		for (int i = 1; i < 10; i++)
 			possibilities.add(i);
-		return possibilities;
 	}
 
-	private ArrayList<Integer> checkRow(ArrayList<Integer> possibilities, int row) {
+	private void checkRow(int row) {
 		for (int i = 0; i < 9; i++) {
 			if (board[row][i].hasValue())
-				possibilities.remove(board[row][i].getValue());
+				remove(board[row][i].getValue());
 		}
-		return possibilities;
 	}
 
-	private ArrayList<Integer> checkColumn(ArrayList<Integer> possibilities, int column) {
+	private void checkColumn(int column) {
 		for (int i = 0; i < 9; i++) {
 			if (board[i][column].hasValue())
-				possibilities.remove(board[i][column].getValue());
+				remove(board[i][column].getValue());
 		}
-		return possibilities;
 	}
 	
-	private ArrayList<Integer> checkBox(ArrayList<Integer> possibilities, int box) {
-		for (int i = ((box/3)*3); i < (i+3); i++) {		/* box tricky calculation */
-			for (int j = ((box%3)*3); j < (j+3); j++) {
+	private void checkBox(int box) {
+		int row_start = ((box/3)*3);
+		int row_end = row_start+3;
+
+		int column_start = ((box%3)*3);
+		int column_end = column_start+3;
+
+		for (int i = row_start; i < row_end; i++) {	
+			for (int j = column_start; j < column_end; j++) {
 				if (board[i][j].hasValue())
-					possibilities.remove(board[i][j].getValue());
+					remove(board[i][j].getValue());
 			}
 		}
-		return possibilities;
+	}
+
+	private void remove(int value) {
+		for (int i = 0; i < possibilities.size(); i++) {
+			if (possibilities.get(i) == value) {
+				possibilities.remove(i);
+				break;
+			}
+		}
 	}
 
 	/* 	methods to set the value of individual boxes on the board, based on the information we have about their possible values */ 
-	public void checkToSetAll() {
+	public boolean checkToSetAll() {
 		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++)
-				checkToSet(board[i][j]);
+			for (int j = 0; j < 9; j++) {
+				if (checkToSet(board[i][j]) == true)
+					return true;
+			}
 		}
+		return false;
 	}
 
-	private void checkToSet(SudokuBox current) {
+	private boolean checkToSet(SudokuBox current) {
 		if (current.hasValue())
-			/* do nothing */;
-		else if (current.getSizePossible() == 1)
-			current.setValue(current.getPossible.get(0));
+			return false;
+		else if (current.getSizePossibleValues() == 1) {
+			current.setValue(current.getPossibleValues().get(0));
+			return true;
+		}
 		else {
-			for (int i : current.getPossible()) {
+			for (int i : current.getPossibleValues()) {
 				if (checkUniqueRow(i, current.getRow()) == true) {
 					current.setValue(i);
-					break;
+					return true;
 				}
 				if (checkUniqueColumn(i, current.getColumn()) == true) {
 					current.setValue(i);
-					break;
+					return true;
 				}
 				if (checkUniqueBox(i, current.getBox()) == true) {
 					current.setValue(i);
-					break;
+					return true;
 				}
 			}
+			return false;
 		}
 	}
 
 	private boolean checkUniqueRow(int value, int row) {
 		int occurrences = 0;
 		for (int i = 0; i < 9; i++) {
-			if (board[row][i].checkPossible(value) == true) 
+			if (board[row][i].checkPossibleValues(value) == true) 
 				occurrences++;
 		}
+		System.out.println("occurrences for "+value+" in row "+row+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else
@@ -144,9 +166,10 @@ public class SudokuBoard {
 	private boolean checkUniqueColumn(int value, int column) {
 		int occurrences = 0;
 		for (int i = 0; i < 9; i++) {
-			if (board[i][column].checkPossible(value) == true)
+			if (board[i][column].checkPossibleValues(value) == true)
 				occurrences++;
 		}
+		System.out.println("occurrences for "+value+" in column "+column+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else
@@ -155,12 +178,13 @@ public class SudokuBoard {
 
 	private boolean checkUniqueBox(int value, int box) {
 		int occurrences = 0;
-		for (int i = ((box/3)*3); i < (i+3); i++) {		/*	box tricky calculation again */
-			for (int j = ((box%3)*3); j < (j+3); j++) {	
-				if (board[i][j].checkPossible(value) == true)
+		for (int i = ((box/3)*3); i < (((box+1)/3)*3); i++) {		/* box tricky calculation again */
+			for (int j = ((box%3)*3); j < (((box+1)%3)*3); j++) {
+				if (board[i][j].checkPossibleValues(value) == true)
 					occurrences++;
 			}
 		}
+		System.out.println("occurrences for "+value+" in box "+box+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else
@@ -180,8 +204,11 @@ public class SudokuBoard {
 	public String toString() {
 		String result = "";
 		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++)
+			for (int j = 0; j < 9; j++) {
 				result += String.valueOf(board[i][j].getValue());
+				if ((i == 2 && j == 8) || (i == 5 && j == 8))
+					result += "\n";
+			}
 			result += "\n";
 		}
 		return result;

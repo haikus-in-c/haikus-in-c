@@ -1,7 +1,8 @@
 public class Test {
-		
+
 	public static void main(String[] args) {
-		SudokuBoard x = new SudokuBoard();
-		System.out.println(x);
+		SudokuBoard puzzle = new SudokuBoard();
+		SudokuSolver genius = new SudokuSolver();
+		genius.solve(puzzle);
 	}
 }

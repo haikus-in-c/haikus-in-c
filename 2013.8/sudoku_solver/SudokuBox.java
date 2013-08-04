@@ -49,7 +49,7 @@ public class SudokuBox {
 			return true;
 	}
 
-	public void addPossibleValue(ArrayList<Integer> possibilities) {
+	public void addPossibleValues(ArrayList<Integer> possibilities) {
 		possibleValues.clear();
 		for (int i : possibilities)
 			possibleValues.add(i);
@@ -77,6 +77,7 @@ public class SudokuBox {
 	
 	public void setValue(int init_value) {
 		value = init_value;
+		possibleValues.clear();
 	}
 
 	public int getRow() {
@@ -89,5 +90,12 @@ public class SudokuBox {
 
 	public int getBox() {
 		return box;
+	}
+
+	public String toString() {
+		String result = ""+row+":"+column+"\n";
+		for (int i : possibleValues)
+			result += ""+i+", ";
+		return result;
 	}
 }
