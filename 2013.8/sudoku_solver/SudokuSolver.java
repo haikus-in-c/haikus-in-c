@@ -13,7 +13,10 @@ public class SudokuSolver {
 			System.out.println("FILLING ALL");
 			board.fillPossibleAll();
 			System.out.println("CHECKING ALL");
-			board.checkToSetAll();
+			if (board.checkToSetAll() == true)
+				System.out.println("change made");
+			else
+				System.out.println("no changes made");
 			System.out.println(board);
 		}
 		System.out.println("\nsolved!\n");

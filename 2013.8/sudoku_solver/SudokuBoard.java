@@ -58,7 +58,6 @@ public class SudokuBoard {
 			/* do nothing */;
 		else
 			current.addPossibleValues(findPossibilities(current));
-		System.out.println(current);
 	}
 
 	private ArrayList<Integer> findPossibilities(SudokuBox current) {
@@ -156,7 +155,6 @@ public class SudokuBoard {
 			if (board[row][i].checkPossibleValues(value) == true) 
 				occurrences++;
 		}
-		System.out.println("occurrences for "+value+" in row "+row+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else
@@ -169,7 +167,6 @@ public class SudokuBoard {
 			if (board[i][column].checkPossibleValues(value) == true)
 				occurrences++;
 		}
-		System.out.println("occurrences for "+value+" in column "+column+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else
@@ -184,7 +181,6 @@ public class SudokuBoard {
 					occurrences++;
 			}
 		}
-		System.out.println("occurrences for "+value+" in box "+box+": "+occurrences);
 		if (occurrences == 1)
 			return true;
 		else

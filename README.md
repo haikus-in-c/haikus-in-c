@@ -1,6 +1,11 @@
 Haikus in C
 ===========
 
-all the code for my coding blog Haikus in C
+all the code for the coding blog Haikus in C
 
-collaborator: Ruchir Khaitan
+collaborators:
+* [Ian Zapolky][ianzapolsky]
+* [Ruchir Khaitan][ruchir]
+
+[ianzapolsky]:https://github.com/ianzapolsky
+[ruchir]:https://github.com/ruchirK
