@@ -45,7 +45,7 @@ public class SudokuBoard {
 		return true;
 	}
 
-	/* 	methods to determine all the possible values for each box on the board */ 
+	/*	methods to determine and set all the possible values for each box on the board */ 
 	public void fillPossibleAll() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++)
@@ -77,33 +77,27 @@ public class SudokuBoard {
 	private void checkRow(int row) {
 		for (int i = 0; i < 9; i++) {
 			if (board[row][i].hasValue())
-				remove(board[row][i].getValue());
+				removePossibility(board[row][i].getValue());
 		}
 	}
 
 	private void checkColumn(int column) {
 		for (int i = 0; i < 9; i++) {
 			if (board[i][column].hasValue())
-				remove(board[i][column].getValue());
+				removePossibility(board[i][column].getValue());
 		}
 	}
 	
 	private void checkBox(int box) {
-		int row_start = ((box/3)*3);
-		int row_end = row_start+3;
-
-		int column_start = ((box%3)*3);
-		int column_end = column_start+3;
-
-		for (int i = row_start; i < row_end; i++) {	
-			for (int j = column_start; j < column_end; j++) {
+		for (int i = getBoxStartRow(box); i < getBoxEndRow(box); i++) {	
+			for (int j = getBoxStartColumn(box); j < getBoxEndColumn(box); j++) {
 				if (board[i][j].hasValue())
-					remove(board[i][j].getValue());
+					removePossibility(board[i][j].getValue());
 			}
 		}
 	}
 
-	private void remove(int value) {
+	private void removePossibility(int value) {
 		for (int i = 0; i < possibilities.size(); i++) {
 			if (possibilities.get(i) == value) {
 				possibilities.remove(i);
@@ -112,7 +106,99 @@ public class SudokuBoard {
 		}
 	}
 
-	/* 	methods to set the value of individual boxes on the board, based on the information we have about their possible values */ 
+	/*	methods to remove possible values on the board, based on proven sudoku solving methods */
+	public void editPossible() {
+		boxRowColumnInteraction();
+	}
+
+	private void boxRowColumnInteraction() {
+		for (int box = 0; box < 9; box++) {
+			for (int value = 1; value < 10; value++) {
+				removeWithinRow(checkUniqueWithinRow(box, value), box, value);
+				removeWithinColumn(checkUniqueWithinColumn(box, value), box, value);
+			}
+		}
+	}
+
+	private void removeWithinRow(int row, int box_to_avoid, int value) {
+		if (row == 0)
+			/* do nothing */;
+		else {
+			for (int i = 0; i < 9; i++) {
+				if (i == getBoxStartColumn(box_to_avoid) || i == (getBoxStartColumn(box_to_avoid)+1) ||
+					i == (getBoxStartColumn(box_to_avoid)+2))
+					/* do nothing */;
+				else
+					board[row][i].remove(value);
+			}
+		}
+	}
+
+	private void removeWithinColumn(int column, int box_to_avoid, int value) {
+		if (column == 0)
+			/* do nothing */;
+		else {
+			for (int i = 0; i < 9; i++) {
+				if (i == getBoxStartRow(box_to_avoid) || i == (getBoxStartRow(box_to_avoid)+1) ||
+					i == (getBoxStartRow(box_to_avoid)+2))
+					/* do nothing */;
+				else 
+					board[i][column].remove(value);
+			}
+		}
+	}
+
+	private int checkUniqueWithinRow(int box, int value) {
+		boolean first_row, second_row, third_row;
+		first_row = second_row = third_row = false;
+		for (int i = getBoxStartRow(box); i < getBoxEndRow(box); i++) {
+			for (int j = getBoxStartColumn(box); j < getBoxEndColumn(box); j++) {
+				if (board[i][j].checkPossibleValues(value) == true) {
+					if (i == getBoxStartRow(box))
+						first_row = true;
+					else if (i == (getBoxStartRow(box)+1))
+						second_row = true;
+					else
+						third_row = true;
+				}
+			}
+		}
+		if (first_row && !second_row && !third_row)
+			return getBoxStartRow(box);
+		else if (!first_row && second_row && !third_row)
+			return (getBoxStartRow(box)+1);
+		else if (!first_row && !second_row && third_row)
+			return (getBoxStartRow(box)+2);
+		else
+			return 0;
+	}
+
+	private int checkUniqueWithinColumn(int box, int value) {
+		boolean first_column, second_column, third_column;
+		first_column = second_column = third_column = false;
+		for (int i = getBoxStartRow(box); i < getBoxEndRow(box); i++) {
+			for (int j = getBoxStartColumn(box); j < getBoxEndColumn(box); j++) {
+				if (board[i][j].checkPossibleValues(value) == true) {
+					if (j == getBoxStartColumn(box))
+						first_column = true;
+					else if (j == (getBoxStartColumn(box)+1))
+						second_column = true;
+					else
+						third_column = true;
+				}
+			}
+		}
+		if (first_column && !second_column && !third_column)
+			return getBoxStartColumn(box);
+		else if (!first_column && second_column && !third_column)
+			return (getBoxStartColumn(box)+1);
+		else if (!first_column && !second_column && third_column)
+			return (getBoxStartColumn(box)+2);
+		else
+			return 0;
+	}
+
+	/*	methods to set the value of individual boxes on the board, based on the information we have about their possible values */ 
 	public boolean checkToSetAll() {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -175,8 +261,8 @@ public class SudokuBoard {
 
 	private boolean checkUniqueBox(int value, int box) {
 		int occurrences = 0;
-		for (int i = ((box/3)*3); i < (((box+1)/3)*3); i++) {		/* box tricky calculation again */
-			for (int j = ((box%3)*3); j < (((box+1)%3)*3); j++) {
+		for (int i = getBoxStartRow(box); i < getBoxEndRow(box); i++) {
+			for (int j = getBoxStartColumn(box); j < getBoxEndColumn(box); j++) {
 				if (board[i][j].checkPossibleValues(value) == true)
 					occurrences++;
 			}
@@ -195,6 +281,22 @@ public class SudokuBoard {
 			}
 		}
 		return true;
+	}
+
+	private int getBoxStartRow(int box) {
+		return ((box/3)*3);
+	}
+	
+	private int getBoxEndRow(int box) {
+		return (getBoxStartRow(box) + 3);
+	}
+
+	private int getBoxStartColumn(int box) {
+		return ((box%3)*3);
+	}
+
+	private int getBoxEndColumn(int box) {
+		return (getBoxStartColumn(box) + 3);
 	}
 
 	public String toString() {

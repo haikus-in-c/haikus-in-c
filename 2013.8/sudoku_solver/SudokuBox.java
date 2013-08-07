@@ -55,6 +55,15 @@ public class SudokuBox {
 			possibleValues.add(i);
 	}
 
+	public void remove(int possibility) {
+        for (int i = 0; i < possibleValues.size(); i++) {
+            if (possibleValues.get(i) == value) {
+                possibleValues.remove(i);
+                break;
+            }
+        }
+    }
+
 	public boolean checkPossibleValues(int possibility) {
 		for (int i : possibleValues) {
 			if (i == possibility)
