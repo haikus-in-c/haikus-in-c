@@ -1,7 +1,7 @@
 Haikus in C
 ===========
 
-all the code for the coding blog Haikus in C
+all the code for the coding blog Haikus in C  
 
 collaborators:
 * [Ian Zapolsky][ianzapolsky]
