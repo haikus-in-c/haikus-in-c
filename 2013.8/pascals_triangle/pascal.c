@@ -1,5 +1,5 @@
 /* Code to print the first n rows of pascals triangle
- * also stores the nth roow in memory as an array 
+ * also stores the nth row in memory as an array 
  * requires 1 command line argument for number of rows and doesn't contain error checking
  * by Ruchir Khaitan
  */
