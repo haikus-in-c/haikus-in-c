@@ -63,6 +63,18 @@ public class SudokuBox {
             }
         }
     }
+	
+	public boolean equals(SudokuBox other) {
+		if (other.getSizePossibleValues() != this.getSizePossibleValues())
+			return false;
+		else {
+			for (int i = 0; i < this.getSizePossibleValues(); i++) {
+				if (this.getPossibleValueByIndex(i) != other.getPossibleValueByIndex(i))
+					return false;
+			}
+			return true;
+		}
+	}
 
 	public boolean checkPossibleValues(int possibility) {
 		for (int i : possibleValues) {
@@ -74,6 +86,10 @@ public class SudokuBox {
 
 	public ArrayList<Integer> getPossibleValues() {
 		return possibleValues;
+	}
+
+	public int getPossibleValueByIndex(int index) {
+		return possibleValues.get(index);
 	}
 
 	public int getSizePossibleValues() {

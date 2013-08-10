@@ -109,6 +109,7 @@ public class SudokuBoard {
 	/*	methods to remove possible values on the board, based on proven sudoku solving methods */
 	public void editPossible() {
 		boxRowColumnInteraction();
+		nakedSubset();
 	}
 
 	private void boxRowColumnInteraction() {
@@ -196,6 +197,54 @@ public class SudokuBoard {
 			return (getBoxStartColumn(box)+2);
 		else
 			return 0;
+	}
+
+	private void nakedSubset() {
+		for (int i = 0; i < 9; i++) {
+			checkRowSubsetOfTwo(i);
+			checkColumnSubsetOfTwo(i);
+		}
+	}
+
+	private void checkRowSubsetOfTwo(int row) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = (i+1); j < 9; j++) {
+				if (board[row][i].equals(board[row][j]) &&
+					board[row][i].getSizePossibleValues() == 2)
+					System.out.println("removing subset in boxes "+i+" and "+j+" from row "+row);
+					removeSubsetOfTwoFromRow(row, i, j, board[row][i]);
+			}
+		}
+	}
+
+	private void checkColumnSubsetOfTwo(int column) {
+		for (int i = 0; i < 8; i++) {
+			for (int j = (i+1); j < 9; j++) {
+				if (board[i][column].equals(board[j][column]) &&
+					board[i][column].getSizePossibleValues() == 2) {
+					System.out.println("removing subset in boxes "+i+" and "+j+" from column "+column);
+					removeSubsetOfTwoFromColumn(column, i, j, board[i][column]);
+				}
+			}
+		}
+	}
+
+	private void removeSubsetOfTwoFromRow(int row, int ignore_one, int ignore_two, SudokuBox values) {
+		for (int i = 0; i < 9; i++) {
+			if (i != ignore_one && i != ignore_two) {
+				board[row][i].remove(values.getPossibleValueByIndex(0));
+				board[row][i].remove(values.getPossibleValueByIndex(1));
+			}
+		}	
+	}
+
+	private void removeSubsetOfTwoFromColumn(int column, int ignore_one, int ignore_two, SudokuBox values) {
+		for (int i = 0; i < 9; i++) {
+			if (i != ignore_one && i != ignore_two) {
+				board[i][column].remove(values.getPossibleValueByIndex(0));
+				board[i][column].remove(values.getPossibleValueByIndex(1));
+			}
+		}	
 	}
 
 	/*	methods to set the value of individual boxes on the board, based on the information we have about their possible values */ 
