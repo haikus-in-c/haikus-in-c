@@ -18,7 +18,8 @@
 # todo -p 					 --> prints a list of your todos, organized by category
 #
 # todo -r priority-level/thing-i-have-to-do --> removes a todo. note that this
-# 								 command must be run with the priority directory
+# 								 				command must be run with the priority 
+#												directory
 
 set -e
 
