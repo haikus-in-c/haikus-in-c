@@ -6,9 +6,15 @@
 
 #include <stdlib.h>
 #include <stdio.h> 
+void print_pascal(int rowNum);
 
 int main(int argc, char** argv ) {
     int rowNum = atoi(argv[1]) + 1;
+    print_pascal(rowNum); 
+
+}
+
+void print_pascal(int rowNum){
     unsigned long* array = malloc(sizeof(long) *rowNum);
 
     int i, j;
