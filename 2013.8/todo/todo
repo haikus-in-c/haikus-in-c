@@ -51,8 +51,6 @@ function print_list {
   echo "\n"
 }
 
-# script start
-
 flag=0
 while getopts ":t:m:l:r:p" opt; do
   case $opt in
