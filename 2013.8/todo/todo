@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# A customized extension to Zach Holman's todo script by Ian Zapolsky (8/11/13)
+#
+# Adds the ability to prioritize, delete, and display all the todo files you've
+# touched.
+#
+# Usage: 
+#
+# todo thing-i-have-to-do 	 --> left with no argument, we automatically touch
+#								 a file in the top priority directory
+# todo -t thing-i-have-to-do --> creates thing-i-have-to-do as a top priority
+#								 todo
+# todo -m thing-i-have-to-do --> creates thing-i-have-to-do as a mid priority
+#								 todo
+# todo -l thing-i-have-to-do --> creates thing-i-have-to-do as a low priority
+#								 todo
+# todo -p 					 --> prints a list of your todos, organized by category
+#
+# todo -r priority-level/thing-i-have-to-do --> removes a todo. note that this
+# 								 command must be run with the priority directory
+
+set -e
+
+function print_list {
+  TOP=~/Desktop/todo/top/*
+  MID=~/Desktop/todo/mid/*
+  LOW=~/Desktop/todo/low/*
+
+  echo "\n/// TOP PRIORITY ///"
+  for f in $TOP
+  do
+  	filename=$(basename "$f")
+    echo "  - $filename"
+  done
+
+  echo "\n/// MID PRIORITY ///"
+  for f in $MID
+  do
+    filename=$(basename "$f")
+    echo "  - $filename"
+  done
+
+  echo "\n/// LOW PRIORITY ///"
+  for f in $LOW
+  do
+    filename=$(basename "$f")
+    echo "  - $filename"
+  done
+  echo "\n"
+}
+
+# script start
+
+flag=0
+while getopts ":t:m:l:r:p" opt; do
+  case $opt in
+	t)
+	  touch ~/Desktop/todo/top/"${*:2}" >&2
+	  flag=1
+	  ;;
+	m)
+	  touch ~/Desktop/todo/mid/"${*:2}" >&2
+	  flag=1
+	  ;;
+	l)
+	  touch ~/Desktop/todo/low/"${*:2}" >&2
+	  flag=1
+	  ;;
+	p)
+	  print_list
+	  flag=1
+	  ;;
+	r)
+	  rm ~/Desktop/todo/"${*:2}" >&2
+	  flag=1
+	  ;;
+	:)
+	  touch ~/Desktop/todo/top/"${*:2}" >&2
+	  flag=1
+	  ;;
+	\?)
+	  echo "Invalid option: -$OPTARG" >&2
+	  exit 1
+	  ;;
+  esac
+done
+
+if [ "$flag" = "0" ]; then
+	touch ~/Desktop/todo/top/"$*"
+fi
+
