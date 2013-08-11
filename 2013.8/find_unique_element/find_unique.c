@@ -21,8 +21,7 @@ int naive_find_num_unique(int* array, int size){
 int find_unique2(int* array, int size) {
 	int i, j, num;
 	num =0;
-	int* bvector = (int*) malloc(size * sizeof(int));
-	memset(bvector, 0, size * sizeof(int));
+	char* bvector = (char*) calloc(size, sizeof(char));
 	for(i = 0; i<size; i++){
 		if(!bvector[i]){
 			num++;
@@ -127,8 +126,8 @@ int main(int argc, char** argv){
 
 	//int num_c = naive_find_num_unique(c, c_size);
 	//printf("%d\n", num_c);
-//	int num2_c = find_unique2(c, c_size);
-//	printf("Bitvector: %d\n", num2_c);
+	int num2_c = find_unique2(c, c_size);
+	printf("Bitvector: %d\n", num2_c);
 	int num3_c = find_bst(c, c_size);
 	printf("BST: %d\n", num3_c);
 	//int num4_c = find_fixed_bst(c, c_size);
