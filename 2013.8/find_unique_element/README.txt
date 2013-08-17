@@ -7,10 +7,12 @@ find_unique.c - contains the code to compute the solution and a set of tests in 
 ds.h - a set of data structure implementations for the following: 
 Binary Search Trees
 Red-Black Trees 
-(Hypothetical) Fixed-Size BST - ends up using too much memory
+(Hypothetical) Fixed-Size BST - ends up using too much memory and not working
+very well. Not mentioned in the blog as a result.
 Skip Lists 
 
 Contains methods for inserting, searching, printing to console, and memory cleanup. 
-Doesn't contain any methods for single element deletion. 
+Doesn't contain any methods for single element deletion, as that was not
+relevant to the problem. 
 
 
