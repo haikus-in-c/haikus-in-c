@@ -6,4 +6,5 @@ nCr = n!/r!(n-r)! the numbers n and r can be very large - so that values frequen
 One workaround is to use the distributive property of the modulus operator:
 (a + b) % n ={ (a%n) + (b%n) } % n and build the nth row of pascal's triangle - but values are so large that they will regularly cause segmentation fault. 
 
- 
+Is very clear after doing some more research that this problem requires
+advanced mathematics 
