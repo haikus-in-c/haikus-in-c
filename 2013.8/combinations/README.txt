@@ -7,4 +7,19 @@ One workaround is to use the distributive property of the modulus operator:
 (a + b) % n ={ (a%n) + (b%n) } % n and build the nth row of pascal's triangle - but values are so large that they will regularly cause segmentation fault. 
 
 Is very clear after doing some more research that this problem requires
-advanced mathematics 
+advanced mathematics
+
+Potential option: Lucas's Theorem which states that
+
+nCr mod p - p is prime 
+where n = kn * p^n + k(n-1) p^(n-1) .. + .. k1p + k0p^0 or knk(n-1)...k1k0 is
+n expressed in base p 
+and r is the same way, bnb(n-1)...b1b0 
+
+Then nCr mod p = 
+
+(knCbn * k(n-1)Cb(n-1) .. * .. k1Cb1 * k0Cb0 ) mod p 
+
+So this shifts the problem to one of:
+translating a number from decimal to arbitrary base
+performing combinations on it 
