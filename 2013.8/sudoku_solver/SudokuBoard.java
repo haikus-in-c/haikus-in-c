@@ -109,7 +109,7 @@ public class SudokuBoard {
 	/*	methods to remove possible values on the board, based on proven sudoku solving methods */
 	public void editPossible() {
 		boxRowColumnInteraction();
-		nakedSubset();
+		//nakedSubset();
 	}
 
 	private void boxRowColumnInteraction() {

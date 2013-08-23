@@ -1,6 +1,7 @@
 #!/bin/sh
 #
-# A customized extension to Zach Holman's todo script by Ian Zapolsky (8/11/13)
+# A customized extension to Zach Holman's todo script 
+# by Ian Zapolsky (8/11/13)
 #
 # Adds the ability to prioritize, delete, and display all the todo files you've
 # touched.
@@ -17,9 +18,8 @@
 #								 todo
 # todo -p 					 --> prints a list of your todos, organized by category
 #
-# todo -r priority-level/thing-i-have-to-do --> removes a todo. note that this
-# 								 				command must be run with the priority 
-#												directory
+# todo -r thing-i-have-to-do --> deletes a todo from whichever priority category
+#								 it's in 
 
 set -e
 
@@ -51,6 +51,15 @@ function print_list {
   echo "\n"
 }
 
+function remove {
+  find ~/Desktop/todo/top -name "$1" -exec rm {} \;
+  find ~/Desktop/todo/mid -name "$1" -exec rm {} \;
+  find ~/Desktop/todo/low -name "$1" -exec rm {} \;
+  echo "niiice, you killed that shit"
+}
+
+# script start
+
 flag=0
 while getopts ":t:m:l:r:p" opt; do
   case $opt in
@@ -71,7 +80,7 @@ while getopts ":t:m:l:r:p" opt; do
 	  flag=1
 	  ;;
 	r)
-	  rm ~/Desktop/todo/"${*:2}" >&2
+	  remove "${*:2}"
 	  flag=1
 	  ;;
 	:)
