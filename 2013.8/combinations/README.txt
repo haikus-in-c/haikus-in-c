@@ -27,3 +27,5 @@ performing combinations on it
 how would this approach work on integers << than p but still pretty big, for
 example 1437 C 236 - which still crashes out, but be unaffected by using the
 above computation, since neither n or k are multiples of p? idk
+
+maybe instead I should try a recursive solution  
