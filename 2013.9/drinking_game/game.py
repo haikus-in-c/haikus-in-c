@@ -16,10 +16,10 @@ class Game:
 		self.breakpoint = init_breakpoint
 		
 	""" TODO: add 2nd param here to avoid assuming 7 """
-	def clap(self, number):
-		if self.factor_check(number, 7):
-			return True
-		if self.end_check(number, 7):
+    def clap(self, number):
+        if self.factor_check(number, 7):
+            return True
+        if self.end_check(number, 7):
 			return True
 		if self.sum_check(number, 7):
 			return True
