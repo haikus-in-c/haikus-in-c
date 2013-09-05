@@ -17,7 +17,7 @@ didn't know any algorithms for finding square roots.
         stop this incrementing loop.
         1.  Begin counting backwards from the integer we stopped on (the first integer whose
             square gave us something bigger than what we're looking for) by some small
-            interval (.01 in the test program).
+            interval (.0001 in the test program).
         2.  Check the square of this *rewinding* value after each decrement.
             1.  If at any point we get the square we're looking for, return the 
                 *rewinding* value. This is the square root. We are done.
