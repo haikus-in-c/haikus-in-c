@@ -27,6 +27,6 @@ didn't know any algorithms for finding square roots.
                 root, which is OK. This is a naive method.
 
 big-O time complexity: I'm super tempted to write O(log(n)), but I'm actually not clear at all
-on the time complexity of this algorithm. To me it seems that we increment up from 1 log(n) or
+on the time complexity of this algorithm. To me it seems that we increment up from 1 to log(n) or
 one past it.  If the number is not a perfect square we have to do a maximum of 1/(chosen_backup_interval)
 backward steps, and then we're done. So I guess the answer here is I'm not sure, let me check.
