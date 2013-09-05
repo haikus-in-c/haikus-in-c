@@ -10,7 +10,7 @@ double backup(double square, double start) {
         printf("now checking: %f.\n", cur);
         if ((cur*cur) == square)
             return cur;
-        cur -= .01;
+        cur -= .0001;
     }
     return cur;
 }
@@ -29,7 +29,7 @@ double search_root(double square) {
 }
 
 int main() {
-    double root = search_root(20);
+    double root = search_root(1021);
     printf("root is %f.\n", root);  
     return 0;
 }
