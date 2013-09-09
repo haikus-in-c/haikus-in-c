@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
   
     ans = newton_sqrt(val, .000001);
     printf("The square root is: %lf\n",ans);
-    test_sqrt();
+    //test_sqrt();
 }
 
 

@@ -29,8 +29,12 @@ double search_root(double square) {
 }
 
 int main() {
-    double root = search_root(1021);
-    printf("root is %f.\n", root);  
+    double val,root;
+    printf("enter number to take square root of: ");
+    scanf("%lf", &val);
+    
+    root = search_root(val);
+    printf("The square root is: %lf\n", root);
     return 0;
 }
 
